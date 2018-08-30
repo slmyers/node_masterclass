@@ -2,30 +2,24 @@
 
 
 
-class Handlers {
+const Handlers = {
 
-    constructor() {
-        this.paths = {
-            'sample': this.sample,
-        }
-    }
-
-    sample(data, callback) {
+    sample: (data, callback) => {
         callback(406, {'name': 'sample handler'})
-    }
+    },
 
-    notFound(data, callback) {
-        callback(404)
+    notfound: (data, callback) => {
+        callback(404, {'name': 'notfound handler'})
     }
-}
+};
 
 module.exports = class Router {
-    constructor(){
-        this.handlers = new Handlers();
+
+    constructor() {
+        this.handlers = Object.keys(Handlers).reduce( (_handlers, key) => ({[key.toLowerCase()]: Handlers[key], ..._handlers}), {});
     }
 
     match(pathname) {
-        const { paths } = this.handlers;
-        return paths[pathname] || this.handlers.notFound;
+        return this.handlers[pathname.toLowerCase()] || this.handlers.notfound
     }
 };

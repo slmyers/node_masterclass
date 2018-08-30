@@ -2,6 +2,8 @@ const http = require('http');
 const url = require('url');
 const StringDecoder = require('string_decoder').StringDecoder;
 const Router = require('./Router');
+const Config = require('./config');
+console.dir(Config);
 
 const UTF_8 = 'utf-8';
 const router = new Router();
@@ -38,6 +40,7 @@ http.createServer( (req, res) => {
         chosenHandler(data, (statusCode=200, payload={}) => {
 
             const payloadString = JSON.stringify(payload);
+            res.setHeader('Content-Type', 'application/json');
             res.writeHead(statusCode);
             res.end(payloadString)
         });
