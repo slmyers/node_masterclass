@@ -1,31 +1,14 @@
-
-
-
-
-class Handlers {
-
-    constructor() {
-        this.paths = {
-            'sample': this.sample,
-        }
-    }
-
-    sample(data, callback) {
-        callback(406, {'name': 'sample handler'})
-    }
-
-    notFound(data, callback) {
-        callback(404)
-    }
-}
-
 module.exports = class Router {
-    constructor(){
-        this.handlers = new Handlers();
+    constructor(routes){
+        this.match = this.match.bind(this)
+        this.routes = routes
+    }
+    match(pathname) {
+        const key = Object.keys(this.routes).find(key => key.toLowerCase() === pathname.toLowerCase())
+        return this.routes[key] || (this.routes.notFound ? this.routes.notFound : Router.notFound)
     }
 
-    match(pathname) {
-        const { paths } = this.handlers;
-        return paths[pathname] || this.handlers.notFound;
+    static notFound(data={}, cb) {
+        cb(404, {'name': 'default notFound', ...data})
     }
 };
