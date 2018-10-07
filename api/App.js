@@ -26,7 +26,7 @@ module.exports = (req, res) => {
             headers: req.headers,
             payload: buffer
         };
-        const handler = router.match(trimmedPath !== "__proto__" ? trimmedPath : "")
+        const handler = router.match(trimmedPath)
         handler(data, (statusCode=200, payload={}) => {
             const payloadString = JSON.stringify(payload);
             res.writeHead(statusCode);
