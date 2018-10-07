@@ -3,6 +3,7 @@ const StringDecoder = require('string_decoder').StringDecoder;
 const Router = require('./Router');
 
 const UTF_8 = 'utf-8';
+
 const router = new Router({
     sample: function(data={}, cb){
         cb(406, {'name': 'sample handler', ...data})
