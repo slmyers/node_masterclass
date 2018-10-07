@@ -5,6 +5,7 @@ module.exports = class Router {
     match(pathname) {
         const notFound = (this.routes.notFound || Router.notFound)
         const lowercased = typeof pathname === "string" ? pathname.toLowerCase() : null
+        // so the user can not access functions on the prototype
         const key = Object.keys(this.routes).find(k => k === lowercased)
         return this.routes[key] || notFound
     }
