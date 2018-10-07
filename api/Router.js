@@ -3,11 +3,10 @@ module.exports = class Router {
         this.routes = routes
     }
     match(pathname) {
-        const key = Object.keys(this.routes).find(key => key.toLowerCase() === pathname.toLowerCase())
         const notFound = (this.routes.notFound || Router.notFound)
-        return this.routes[key] || notFound
+        const lowercased = typeof pathname === "string" ? pathname.toLowerCase() : null
+        return this.routes[lowercased] || notFound
     }
-
     static notFound(data={}, cb) {
         cb(404, {'name': 'default notFound', ...data})
     }

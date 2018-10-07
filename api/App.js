@@ -3,14 +3,10 @@ const StringDecoder = require('string_decoder').StringDecoder;
 const Router = require('./Router');
 
 const UTF_8 = 'utf-8';
-
 const router = new Router({
-    sample: function(data={}, cb){
+    sample: function(data, cb){
         cb(406, {'name': 'sample handler', ...data})
     },
-    notFound: function(data={}, cb){
-        cb(404, {'name': 'supplied notFound', ...data})
-    }
 });
 
 module.exports = (req, res) => {
@@ -30,8 +26,8 @@ module.exports = (req, res) => {
             headers: req.headers,
             payload: buffer
         };
-        const handler = router.match(trimmedPath)
-		handler(data, (statusCode=200, payload={}) => {
+        const handler = router.match(trimmedPath !== "__proto__" ? trimmedPath : "")
+        handler(data, (statusCode=200, payload={}) => {
             const payloadString = JSON.stringify(payload);
             res.writeHead(statusCode);
             res.end(payloadString)
